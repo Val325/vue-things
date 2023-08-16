@@ -1,8 +1,8 @@
 <template>
-  <div class="text">
-    <slot name="header"></slot>
+  <div class="post">
+    <slot name="id"></slot>
+    <slot name="title"></slot>
     <slot name="body"></slot>
-    <slot name="footer"></slot>
   </div>
 </template>
 
