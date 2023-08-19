@@ -7,6 +7,10 @@ import WelcomeItem from '../components/WelcomeItem.vue'
 export default {
   data() {
     return {
+      formInfo: {
+        title: '',
+        task: ''
+      },
       post: []
     }
   },
@@ -15,6 +19,20 @@ export default {
       fetch('https://jsonplaceholder.typicode.com/posts?_limit=5')
         .then(response => response.json())
         .then(data => this.post = data)
+    },
+    sendPost(){
+      // Simple POST request with a JSON body using fetch
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: this.formInfo.title,
+          task: this.formInfo.task 
+        })
+      };
+      fetch("http://127.0.0.1:8000/", requestOptions)
+        .then(response => response.json())
+        .then(data => console.log(data))
     }
   },
   mounted() {
@@ -22,17 +40,20 @@ export default {
   }
 }
 
-/*
-<div class="post">
-          <h2 class="idnum">{{ p.id }}</h2>
-          <h2 class="title">{{ p.title }}</h2>
-          <p>{{ p.body }}</p>
-        </div>
-*/
+
 </script>
 
 <template>
   <main>
+
+    <div id="app">
+      <form @submit.prevent="sendPost" method="post" action="http://127.0.0.1:8000/">
+            <input type="title" v-model="formInfo.title" placeholder="Enter your title" name="title"><br><br>
+            <textarea type="task" v-model="formInfo.task" placeholder="Enter your task" name="task"></textarea><br><br>
+            <button type="submit">Submit task</button>
+      </form>
+    </div>
+
     <div v-for="p in post" :key="p.id">
       <Transition name="slide-fade" appear>
         <WelcomeItem>
