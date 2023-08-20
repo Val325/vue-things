@@ -4,6 +4,7 @@ import WelcomeItem from '../components/WelcomeItem.vue'
 </script>
 
 <script>
+//https://jsonplaceholder.typicode.com/posts?_limit=5
 export default {
   data() {
     return {
@@ -16,7 +17,7 @@ export default {
   },
   methods: {
     getPosts() {
-      fetch('https://jsonplaceholder.typicode.com/posts?_limit=5')
+      fetch('http://127.0.0.1:8000/api/posts')
         .then(response => response.json())
         .then(data => this.post = data)
     },
@@ -48,9 +49,11 @@ export default {
 
     <div id="app">
       <form @submit.prevent="sendPost" method="post" action="http://127.0.0.1:8000/">
+          <div>
             <input type="title" v-model="formInfo.title" placeholder="Enter your title" name="title"><br><br>
             <textarea type="task" v-model="formInfo.task" placeholder="Enter your task" name="task"></textarea><br><br>
-            <button type="submit">Submit task</button>
+            <button class="button-37" type="submit">Submit task</button>
+          </div>
       </form>
     </div>
 
@@ -64,7 +67,7 @@ export default {
             <h2 class="title">{{ p.title }}</h2>
           </template>
           <template v-slot:body>
-            <p>{{ p.body }}</p>
+            <p>{{ p.task }}</p>
           </template>
         </WelcomeItem>
       </Transition>
@@ -75,6 +78,70 @@ export default {
 <style>
 main {
   text-align: center;
+}
+form > div{
+  margin-left: auto;
+  margin-right: auto;
+  width:370px;
+}
+
+
+
+/* CSS */
+.button-37 {
+  background-color: #13aa52;
+  border: 1px solid #13aa52;
+  border-radius: 4px;
+  box-shadow: rgba(0, 0, 0, .1) 0 2px 4px 0;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  font-family: "Akzidenz Grotesk BQ Medium", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  outline: none;
+  outline: 0;
+  padding: 10px 25px;
+  text-align: center;
+  transform: translateY(0);
+  transition: transform 150ms, box-shadow 150ms;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-37:hover {
+  box-shadow: rgba(0, 0, 0, .15) 0 3px 9px 0;
+  transform: translateY(-2px);
+}
+
+@media (min-width: 768px) {
+  .button-37 {
+    padding: 10px 30px;
+  }
+}
+
+input {
+  width: 400px;
+  height: 10px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;  
+}
+textarea {
+  width: 400px;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
 }
 .post {
   border: 3px solid var(--color-border);

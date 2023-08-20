@@ -105,15 +105,15 @@ function filterAllSessions(sessionsArray){
 app.get('/api/posts', function(request, response) {
     //request.session.destroy();
    //console.log("session: ", request.sessionStore.sessions);
-    filterAllSessions(request.sessionStore.sessions) 
+    //filterAllSessions(request.sessionStore.sessions) 
     let data_db = {};
    //isAuthentification(isAuth, "/api/posts") 
    // Query data from the table
    let dataProm = new Promise((resolve, reject) => {
-   db.each("SELECT id, datatext, imageurl FROM TextTables", function(err, row) {
+   db.each("SELECT id, title, task, taskcomplete FROM TextTables", function(err, row) {
       //console.log("Data from Database: ", row.id + ": " + row.datatext);
       //console.log("All data from DB: ", row)
-      data_db[row.id] = {id: row.id, text: row.datatext, url_image: row.imageurl};
+      data_db[row.id] = {id: row.id, title: row.title, task: row.task, taskcomplete: row.taskcomplete};
       resolve(data_db); 
      });
   }).then(rows => {
@@ -149,32 +149,15 @@ app.get('/api/posts/:postId', function(request, response) {
 app.post('/', function(request, response){
 
     console.log("From frontend: ", request.body);
-    //console.log("Image from frontend: ", request.file, request.body);
-    //console.log("session: ", request.session);
-    //console.log("cookie: ", request.cookies)
-    //isAuthentification(isAuth, "/api/posts")
-    /*)
-    if (request.file === undefined){
-       db.serialize(function() {
+
+    db.serialize(function() {
        // Create a table
-       db.run("CREATE TABLE IF NOT EXISTS TextTables (id INTEGER PRIMARY KEY, title TEXT, task TEXT)");
+       db.run("CREATE TABLE IF NOT EXISTS TextTables (id INTEGER PRIMARY KEY, title TEXT, task TEXT,taskcomplete INTEGER)");
 
        // Insert text and image into the table
-       db.run("INSERT INTO TextTables (title, task) VALUES (?,?)", request.body.title, request.body.task);
-       });
-    }else {
-       console.log("Path: ", request.file.path);
-       
-       db.serialize(function() {
-       // Create a table
-       db.run("CREATE TABLE IF NOT EXISTS TextTables (id INTEGER PRIMARY KEY, title TEXT, task TEXT)");
+       db.run("INSERT INTO TextTables (title, task, taskcomplete) VALUES (?,?,?)", request.body.title, request.body.task, false);
+    });
 
-       // Insert text and image into the table
-       db.run("INSERT INTO TextTables (title, task) VALUES (?,?)", request.body.text, request.file.filename);
-       });
-
-    }
-    */
     
     
 
