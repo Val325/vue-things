@@ -22,7 +22,6 @@ export default {
         .then(data => this.post = data)
     },
     sendPost(){
-      // Simple POST request with a JSON body using fetch
       const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -34,6 +33,30 @@ export default {
       fetch("http://127.0.0.1:8000/", requestOptions)
         .then(response => response.json())
         .then(data => console.log(data))
+      location.reload();
+    },
+    deletePost(id){
+      const requestOptions = {
+        method: "DELETE",
+      };
+      fetch("http://127.0.0.1:8000/posts/" + id, requestOptions)
+        .then(response => response.json())
+        .then(data => console.log(data))
+      location.reload();
+    },
+    changePost(){
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          title: this.formInfo.title,
+          task: this.formInfo.task 
+        })
+      };
+      fetch("http://127.0.0.1:8000/", requestOptions)
+        .then(response => response.json())
+        .then(data => console.log(data))
+
     }
   },
   mounted() {
@@ -59,17 +82,21 @@ export default {
 
     <div v-for="p in post" :key="p.id">
       <Transition name="slide-fade" appear>
-        <WelcomeItem>
-          <template v-slot:id>
-            <h2 class="idnum">{{ p.id }}</h2>
-          </template>
-          <template v-slot:title>
-            <h2 class="title">{{ p.title }}</h2>
-          </template>
-          <template v-slot:body>
-            <p>{{ p.task }}</p>
-          </template>
-        </WelcomeItem>
+        <div>
+          <WelcomeItem>
+            <template v-slot:id>
+              <h2 class="idnum">{{ p.id }}</h2>
+            </template>
+            <template v-slot:title>
+              <h2 class="title">{{ p.title }}</h2>
+            </template>
+            <template v-slot:body>
+              <p>{{ p.task }}</p>
+            </template>
+          </WelcomeItem>
+          <input @click=deletePost(p.id) type="button" class="button-37" value="Task completed" >
+        </div>
+        
       </Transition>
     </div>
   </main>
@@ -89,6 +116,7 @@ form > div{
 
 /* CSS */
 .button-37 {
+  height: 50px;
   background-color: #13aa52;
   border: 1px solid #13aa52;
   border-radius: 4px;

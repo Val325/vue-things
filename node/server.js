@@ -146,6 +146,16 @@ app.get('/api/posts/:postId', function(request, response) {
 
 
 })
+
+
+app.delete('/posts/:postId', function(request, response) {
+    //DELETE FROM table WHERE search_condition;
+   db.each("DELETE FROM TextTables WHERE id = ?", request.params["postId"], function(err, row) {
+      //delete post data
+     });
+   response.send("delete post" + request.params["postId"])
+})
+
 app.post('/', function(request, response){
 
     console.log("From frontend: ", request.body);
